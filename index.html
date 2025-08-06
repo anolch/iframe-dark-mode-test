@@ -131,17 +131,17 @@
         <script>
         let darkMode = 0; // Initial state
 
-        // on orientation chage, if orientation is landscape, set puzzle iframe height to 600px
-        window.addEventListener('orientationchange', function() {
-            const iframe = document.getElementById('puzzleIframe');
-            if (window.innerHeight > window.innerWidth) {
-                // Portrait mode
-                iframe.style.height = '779px';
-            } else {
-                // Landscape mode
-                iframe.style.height = '752px';
-            }
-        });
+        // // on orientation chage, if orientation is landscape, set puzzle iframe height to 600px
+        // window.addEventListener('orientationchange', function() {
+        //     const iframe = document.getElementById('puzzleIframe');
+        //     if (window.innerHeight > window.innerWidth) {
+        //         // Portrait mode
+        //         iframe.style.height = '779px';
+        //     } else {
+        //         // Landscape mode
+        //         iframe.style.height = '752px';
+        //     }
+        // });
 
         // Generate or load user ID
         function getOrCreateUID() {
