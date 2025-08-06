@@ -104,18 +104,6 @@
             border-radius: 8px;
             overflow: hidden;
         }
-
-        @media (orientation: portrait) {
-            #puzzleIframe {
-                height: 779px;
-            }
-        }
-
-        @media (orientation: landscape) {
-            #puzzleIframe {
-                height: 757px;
-            }
-        }
     </style>
 </head>
 
@@ -130,7 +118,7 @@
         </div>
 
         <div class="puzzle-container">
-            <iframe id="puzzleIframe"  width="100%" allow="web-share; fullscreen"
+            <iframe id="puzzleIframe" height="779px"  width="100%" allow="web-share; fullscreen"
                 style="border:none; width: 100% !important; position: static;display: block !important; margin: 0 !important;"
                 aria-label="Puzzle Me Game"></iframe>
             <div style="margin-top: 10px; display: flex; gap: 8px; align-items: center;">
@@ -142,7 +130,19 @@
 
         <script>
         let darkMode = 0; // Initial state
-        
+
+        // on orientation chage, if orientation is landscape, set puzzle iframe height to 600px
+        window.addEventListener('orientationchange', function() {
+            const iframe = document.getElementById('puzzleIframe');
+            if (window.innerHeight > window.innerWidth) {
+                // Portrait mode
+                iframe.style.height = '779px';
+            } else {
+                // Landscape mode
+                iframe.style.height = '752px';
+            }
+        });
+
         // Generate or load user ID
         function getOrCreateUID() {
             let uid = localStorage.getItem('userUID');
