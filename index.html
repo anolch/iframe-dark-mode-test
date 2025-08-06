@@ -131,7 +131,6 @@
         <script>
         let darkMode = 0; // Initial state
 
-        // // on orientation chage, if orientation is landscape, set puzzle iframe height to 600px
         // window.addEventListener('orientationchange', function() {
         //     const iframe = document.getElementById('puzzleIframe');
         //     if (window.innerHeight > window.innerWidth) {
@@ -195,7 +194,8 @@
             if (iframe && input) {
                 const uid = getOrCreateUID();
                 // Build the base URL
-                let baseUrl = 'https://staging.amuselabs.com/pmm/crossword?id=987d47d0&set=success-dark-mode-testing&embed=1';
+                // let baseUrl = 'https://staging.amuselabs.com/pmm/crossword?id=987d47d0&set=success-dark-mode-testing&embed=1';
+                let baseUrl = 'https://staging.amuselabs.com/pmm/crossword?id=tca250803&set=c2458bc57b-lat-21x21&embed=1&debug=1&heightIsControllable=1&debug=1';
                 // Add parameters
                 const newSrc = baseUrl + `&uid=${uid}&darkMode=${darkMode}`;
                 iframe.src = newSrc;
