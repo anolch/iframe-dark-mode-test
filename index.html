@@ -2,13 +2,14 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Safari Storage Access Test</title>
+  <title>Cookie Test (Iframe)</title>
 </head>
 <body>
-  <h2>Iframe Storage Access Test</h2>
-  <button id="setCookie">Set Test Cookie</button>
+  <h2>Iframe Storage Access + Partitioned Cookie Test</h2>
+  <button id="setCookie">Set Normal + Partitioned Cookies</button>
   <button id="checkAccess">Check Storage Access</button>
   <button id="requestAccess">Request Storage Access</button>
+  <button id="showCookies">Show Cookies</button>
   <p id="status"></p>
 
   <script>
@@ -19,11 +20,21 @@
       status.innerText = msg;
     }
 
-    // Helper: set a test cookie
+    // Set cookies: one normal third-party, one partitioned
     document.getElementById("setCookie").addEventListener("click", () => {
-      document.cookie = "testcookie=1; SameSite=None; Secure";
-      localStorage.setItem("testLocalStorage", Date.now());
-      log("🍪 Test cookie & localStorage set.");
+      try {
+        // Normal third-party cookie (requires requestStorageAccess in Safari)
+        document.cookie = "normalCookie=test123; SameSite=None; Secure";
+
+        // Partitioned cookie (CHIPS)
+        document.cookie = "partitionedCookie=chips456; Secure; SameSite=None; Partitioned";
+
+        localStorage.setItem("testLocalStorage", Date.now());
+
+        log("🍪 Normal + Partitioned cookies set, localStorage updated.");
+      } catch (err) {
+        log("Error setting cookies: " + err);
+      }
     });
 
     // Check if API is supported
@@ -33,7 +44,7 @@
       log("requestStorageAccess API is NOT supported in this browser.");
     }
 
-    // Button: check current access
+    // Check current access
     document.getElementById("checkAccess").addEventListener("click", async () => {
       if (!document.hasStorageAccess) {
         log("API not available.");
@@ -47,7 +58,7 @@
       }
     });
 
-    // Button: request access
+    // Request access
     document.getElementById("requestAccess").addEventListener("click", async () => {
       if (!document.requestStorageAccess) {
         log("API not available.");
@@ -55,12 +66,15 @@
       }
       try {
         await document.requestStorageAccess();
-        log("🎉 Storage access granted! You can now read/write cookies/localStorage.");
-        // Try reading back cookie
-        log("Cookies now: " + document.cookie);
+        log("🎉 Storage access granted!");
       } catch (err) {
         log("❌ Access request denied: " + err);
       }
+    });
+
+    // Show cookies visible in this iframe
+    document.getElementById("showCookies").addEventListener("click", () => {
+      log("Cookies visible here: " + document.cookie);
     });
   </script>
 </body>
