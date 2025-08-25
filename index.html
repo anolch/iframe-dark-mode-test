@@ -2,10 +2,11 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Iframe Storage Access Test</title>
+  <title>Safari Storage Access Test</title>
 </head>
 <body>
-  <h2>Iframe Storage Access Test</h2>
+  <h2>Iframe Storage Access Test (Safari)</h2>
+  <button id="setCookie">Set Test Cookie</button>
   <button id="checkAccess">Check Storage Access</button>
   <button id="requestAccess">Request Storage Access</button>
   <p id="status"></p>
@@ -13,42 +14,52 @@
   <script>
     const status = document.getElementById("status");
 
-    // Check if API is available
-    if (document.hasStorageAccess) {
-      status.innerText = "requestStorageAccess API is supported.";
-    } else {
-      status.innerText = "requestStorageAccess API is NOT supported in this browser.";
+    function log(msg) {
+      console.log(msg);
+      status.innerText = msg;
     }
 
-    // Button to check current access
+    // Helper: set a test cookie
+    document.getElementById("setCookie").addEventListener("click", () => {
+      document.cookie = "testcookie=1; SameSite=None; Secure";
+      localStorage.setItem("testLocalStorage", Date.now());
+      log("🍪 Test cookie & localStorage set.");
+    });
+
+    // Check if API is supported
+    if (document.hasStorageAccess) {
+      log("requestStorageAccess API is supported.");
+    } else {
+      log("requestStorageAccess API is NOT supported in this browser.");
+    }
+
+    // Button: check current access
     document.getElementById("checkAccess").addEventListener("click", async () => {
       if (!document.hasStorageAccess) {
-        status.innerText = "API not available.";
+        log("API not available.");
         return;
       }
-
       try {
         const hasAccess = await document.hasStorageAccess();
-        status.innerText = hasAccess
-          ? "✅ Storage access already granted."
-          : "❌ No storage access yet.";
+        log(hasAccess ? "✅ Storage access already granted." : "❌ No storage access yet.");
       } catch (err) {
-        status.innerText = "Error checking access: " + err;
+        log("Error checking access: " + err);
       }
     });
 
-    // Button to request access
+    // Button: request access
     document.getElementById("requestAccess").addEventListener("click", async () => {
       if (!document.requestStorageAccess) {
-        status.innerText = "API not available.";
+        log("API not available.");
         return;
       }
-
       try {
         await document.requestStorageAccess();
-        status.innerText = "🎉 Storage access granted!";
+        log("🎉 Storage access granted! You can now read/write cookies/localStorage.");
+        // Try reading back cookie
+        log("Cookies now: " + document.cookie);
       } catch (err) {
-        status.innerText = "❌ Access request denied: " + err;
+        log("❌ Access request denied: " + err);
       }
     });
   </script>
