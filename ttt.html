@@ -440,11 +440,10 @@
         };
 
         /**
-         * Restarts the game, resetting the board but keeping scores.
+         * Resets the board and shows the symbol selection screen, but keeps scores.
          */
         const restartGame = () => {
             isGameActive = true;
-            currentPlayer = userSymbol;
             for (let i = 0; i < board.length; i++) {
                 board[i] = '';
             }
@@ -452,25 +451,50 @@
             winningLine.style.opacity = '0';
             winningLine.classList.remove('x-win-line', 'o-win-line');
             renderBoard();
-            statusDisplay.innerText = "Your Turn!";
-            saveGameState();
+            statusDisplay.innerText = "Choose your symbol!";
 
-            // If the user is the robot, let the robot make the first move
-            if (currentPlayer === robotSymbol) {
-                statusDisplay.innerText = "Robot's Turn...";
-                setTimeout(robotMove, 1000);
-            }
+            // Hide the game board and show the symbol selection screen
+            gameContainer.classList.add('hidden');
+            symbolSelectionContainer.classList.remove('hidden');
         };
 
         /**
-         * Resets the entire game, including scores.
+         * Resets the entire game, including scores and session data.
          */
         const resetGame = () => {
+            // New: Clear all relevant data from localStorage and cookies
+            localStorage.removeItem('ticTacToeState');
+            localStorage.removeItem('themePreference');
+            document.cookie = `userSymbol=; path=/; SameSite=Lax; expires=Thu, 01 Jan 1970 00:00:00 GMT`;
+            document.cookie = `gameSessionID=; path=/; SameSite=Lax; expires=Thu, 01 Jan 1970 00:00:00 GMT`;
+
+            // Reset all state variables to their initial values
             playerScore = 0;
             robotScore = 0;
+            userSymbol = null;
+            robotSymbol = null;
+            isGameActive = true;
+
+            // Update the UI to reflect the reset state
             playerScoreEl.innerText = playerScore;
             robotScoreEl.innerText = robotScore;
-            restartGame();
+
+            playerSymbolDisplay.innerText = '';
+            robotSymbolDisplay.innerText = '';
+
+            // Return to the symbol selection screen
+            gameContainer.classList.add('hidden');
+            symbolSelectionContainer.classList.remove('hidden');
+
+            // Reset board and winning line
+            for (let i = 0; i < board.length; i++) {
+                board[i] = '';
+            }
+            winningLine.style.width = '0';
+            winningLine.style.opacity = '0';
+            winningLine.classList.remove('x-win-line', 'o-win-line');
+            renderBoard();
+            statusDisplay.innerText = '';
         };
 
         /**
@@ -638,7 +662,18 @@
             symbolSelectionContainer.classList.add('hidden');
             gameContainer.classList.remove('hidden');
 
-            restartGame();
+            // Now, we restart the game from this point
+            isGameActive = true;
+            currentPlayer = userSymbol;
+            renderBoard();
+            statusDisplay.innerText = "Your Turn!";
+            saveGameState();
+
+            // If the user is the robot, let the robot make the first move
+            if (currentPlayer === robotSymbol) {
+                statusDisplay.innerText = "Robot's Turn...";
+                setTimeout(robotMove, 1000);
+            }
         };
 
         /**
