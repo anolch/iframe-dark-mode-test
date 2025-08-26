@@ -152,10 +152,10 @@
     <canvas id="confetti-canvas"></canvas>
 
     <!-- Symbol Selection Screen -->
-    <div id="symbol-selection-container" class="hidden flex-col items-center justify-center w-full">
-        <!-- FIX: Added 'text-center' to the heading -->
-        <h2 class="text-3xl font-bold mb-6 text-indigo-400 text-center">Choose Your Symbol</h2>
-        <div class="flex space-x-8 justify-center">
+    <div id="symbol-selection-container" class="hidden flex-col items-center justify-center">
+        <h2 class="text-3xl font-bold mb-6 text-indigo-400">Choose Your Symbol</h2>
+        <div class="flex space-x-8">
+            <!-- Fix: Added x-color and o-color classes to the buttons -->
             <button id="select-x" class="text-7xl font-bold p-8 rounded-full bg-gray-700 hover:bg-gray-600 transition duration-300 transform hover:scale-110 shadow-lg border-4 border-indigo-400 x-color">
                 X
             </button>
@@ -210,12 +210,9 @@
     <!-- Message box for game outcomes -->
     <div id="message-container" class="hidden">
         <div class="message-overlay"></div>
-        <!-- FIX: Added flex-col and items-center for better layout control -->
-        <div class="message-box flex flex-col items-center">
-            <!-- FIX: Added mb-6 for more space below the text -->
-            <p id="message-text" class="text-3xl font-bold mb-6"></p>
-            <!-- FIX: Changed mt-4 to mt-8 for more space above the button -->
-            <button id="message-close-button" class="mt-8 bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-4 rounded-full">
+        <div class="message-box">
+            <p id="message-text" class="text-3xl font-bold"></p>
+            <button id="message-close-button" class="mt-4 bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-4 rounded-full">
                 OK
             </button>
         </div>
