@@ -1,81 +1,256 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <title>Cookie Test (Iframe)</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iframe Dark Mode Test</title>
+    <style>
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .button-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .action-button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .action-button:hover {
+            background-color: #0056b3;
+        }
+
+        .action-button.dark-mode {
+            background-color: #333;
+        }
+
+        .action-button.dark-mode:hover {
+            background-color: #555;
+        }
+
+        /* Dark mode styles for parent site */
+        body.dark-mode {
+            background-color: #1a1a1a;
+            color: #ffffff;
+        }
+
+        body.dark-mode .container {
+            background-color: #2d2d2d;
+            color: #ffffff;
+        }
+
+        body.dark-mode h1 {
+            color: #ffffff;
+        }
+
+        .status-indicator {
+            margin-left: 10px;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .status-indicator.light {
+            color: #b0df41;
+        }
+
+        .status-indicator.dark {
+            color: #ffc107;
+        }
+
+        .iframe-container {
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-top: 20px;
+        }
+
+        iframe {
+            width: 100%;
+            border: none;
+        }
+
+        .puzzle-container {
+            margin-top: 30px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+    </style>
 </head>
+
 <body>
-  <h2>Iframe Storage Access + Partitioned Cookie Test</h2>
-  <button id="setCookie">Set Normal + Partitioned Cookies</button>
-  <button id="checkAccess">Check Storage Access</button>
-  <button id="requestAccess">Request Storage Access</button>
-  <button id="showCookies">Show Cookies</button>
-  <p id="status"></p>
 
-  <script>
-    const status = document.getElementById("status");
+    <div class="button-container">
+        <button class="action-button" onclick="toggleDarkMode()">
+            <span id="buttonText">Switch to Dark Mode</span>
+        </button>
+    </div>
 
-    function log(msg) {
-      console.log(msg);
-      status.innerText = msg;
-    }
+    <div id="pmm" style="height: 750px;">
+        <iframe id="puzzleIframe" height="100%" width="100%" allow="web-share; fullscreen" aria-label="Puzzle Me Game"
+            referrerpolicy="noreferrer"></iframe>
+    </div>
 
-    // Set cookies: one normal third-party, one partitioned
-    document.getElementById("setCookie").addEventListener("click", () => {
-      try {
-        // Normal third-party cookie (requires requestStorageAccess in Safari)
-        document.cookie = "normalCookie=test123; SameSite=None; Secure";
+    <div style="margin-top: 10px; display: flex; gap: 8px; align-items: center;">
+        <input id="iframeSrcInput" type="text"
+            style="flex:1; padding: 8px; font-size: 14px; border-radius: 4px; border: 1px solid #ccc;" />
+        <button id="updateIframeBtn" class="action-button" style="padding: 8px 16px; font-size: 14px;">Update &
+            Render Iframe</button>
+    </div>
 
-        // Partitioned cookie (CHIPS)
-        document.cookie = "partitionedCookie=chips456; Secure; SameSite=None; Partitioned";
+    <script>
 
-        localStorage.setItem("testLocalStorage", Date.now());
+        window.addEventListener('message', function (e) {
+            if (e.origin.includes("amuselabs.com")) {
+                data = JSON.parse(e.data.toString());
+                if (data['src'] === 'crossword' && data['message'] != "Picker shown") {
+                    console.log("1 - " + data['frameHeight']);
+                    console.log(data);
+                    console.log("---------------------------------------------");
+                    document.getElementById('pmm').style.height = data['frameHeight'] + 'px';
+                } else if (data['message'] != "Picker shown") {
+                    console.log(data);
+                    console.log("2 - " + data['frameHeight']);
+                    console.log("---------------------------------------------");
+                    // document.getElementById('pmm').style.height = '750px';
+                } else {
+                    console.log("3 - " + data['frameHeight']);
+                    console.log("---------------------------------------------");
+                }
+            }
+        });
 
-        log("🍪 Normal + Partitioned cookies set, localStorage updated.");
-      } catch (err) {
-        log("Error setting cookies: " + err);
-      }
-    });
+        let darkMode = 0; // Initial state
 
-    // Check if API is supported
-    if (document.hasStorageAccess) {
-      log("requestStorageAccess API is supported.");
-    } else {
-      log("requestStorageAccess API is NOT supported in this browser.");
-    }
+        // Generate or load user ID
+        function getOrCreateUID() {
+            let uid = localStorage.getItem('userUID');
+            if (!uid) {
+                // Generate a unique ID using timestamp and random number
+                uid = 'uid_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+                localStorage.setItem('userUID', uid);
+                console.log('Generated new UID:', uid);
+            } else {
+                console.log('Loaded existing UID:', uid);
+            }
+            return uid;
+        }
 
-    // Check current access
-    document.getElementById("checkAccess").addEventListener("click", async () => {
-      if (!document.hasStorageAccess) {
-        log("API not available.");
-        return;
-      }
-      try {
-        const hasAccess = await document.hasStorageAccess();
-        log(hasAccess ? "✅ Storage access already granted." : "❌ No storage access yet.");
-      } catch (err) {
-        log("Error checking access: " + err);
-      }
-    });
+        // Load dark mode state from localStorage on page load
+        function loadDarkModeState() {
+            const savedDarkMode = localStorage.getItem('darkMode');
+            if (savedDarkMode !== null) {
+                darkMode = parseInt(savedDarkMode);
+                console.log('Loaded dark mode state from localStorage:', darkMode);
+            }
+        }
 
-    // Request access
-    document.getElementById("requestAccess").addEventListener("click", async () => {
-      if (!document.requestStorageAccess) {
-        log("API not available.");
-        return;
-      }
-      try {
-        await document.requestStorageAccess();
-        log("🎉 Storage access granted!");
-      } catch (err) {
-        log("❌ Access request denied: " + err);
-      }
-    });
+        // Save dark mode state to localStorage
+        function saveDarkModeState() {
+            localStorage.setItem('darkMode', darkMode.toString());
+            console.log('Saved dark mode state to localStorage:', darkMode);
+        }
 
-    // Show cookies visible in this iframe
-    document.getElementById("showCookies").addEventListener("click", () => {
-      log("Cookies visible here: " + document.cookie);
-    });
-  </script>
+        function toggleDarkMode() {
+            darkMode = darkMode === 0 ? 1 : 0;
+            console.log('Dark mode toggled to:', darkMode);
+
+            // Save state to localStorage
+            saveDarkModeState();
+
+            // Update parent site theme
+            updateParentTheme();
+
+            // Update button text
+            updateButtonText();
+
+            // Update iframe with UID and dark mode parameters
+            updateIframeURL();
+        }
+
+        function updateIframeURL() {
+            const iframe = document.getElementById('puzzleIframe');
+            const input = document.getElementById('iframeSrcInput');
+            if (iframe && input) {
+                const uid = getOrCreateUID();
+                // Build the base URL
+
+                // In a Series only happens when opening Jigsaw/Sudoku puzzle from picker
+                // let baseUrl = 'https://staging.amuselabs.com/pmm/date-picker?set=success-guardian-sudoku-medium&test=1';
+                // let baseUrl = 'https://staging.amuselabs.com/pmm/date-picker?set=success-applenews&test=1';
+
+                let baseUrl = 'https://staging.amuselabs.com/pmm/date-picker?set=c2458bc57b56effe01733e82cf68df6e244c9201338d0e55628240b208d6ad48&test=1';
+                // Add parameters
+                const newSrc = baseUrl + `&uid=${uid}&darkMode=${darkMode}`;
+                iframe.src = newSrc;
+                input.value = newSrc;
+                console.log('Updated iframe src to:', newSrc);
+            } else {
+                console.log('PuzzleMe iframe or input not found');
+            }
+        }
+
+        function updateParentTheme() {
+            const body = document.body;
+            const button = document.querySelector('.action-button');
+
+            if (darkMode === 1) {
+                body.classList.add('dark-mode');
+                button.classList.add('dark-mode');
+            } else {
+                body.classList.remove('dark-mode');
+                button.classList.remove('dark-mode');
+            }
+        }
+
+        function updateButtonText() {
+            const buttonText = document.getElementById('buttonText');
+            if (darkMode === 1) {
+                buttonText.textContent = 'Switch to Light Mode';
+            } else {
+                buttonText.textContent = 'Switch to Dark Mode';
+            }
+        }
+
+        // Initialize the page with saved state
+        document.addEventListener('DOMContentLoaded', function () {
+            // Load dark mode state from localStorage
+            loadDarkModeState();
+
+            // Apply the loaded state
+            updateParentTheme();
+            updateButtonText();
+
+            // Inject iframe src with UID and dark mode parameters
+            updateIframeURL();
+            // Add event listener for manual update
+            const updateBtn = document.getElementById('updateIframeBtn');
+            const input = document.getElementById('iframeSrcInput');
+            const iframe = document.getElementById('puzzleIframe');
+            if (updateBtn && input && iframe) {
+                updateBtn.addEventListener('click', function () {
+                    iframe.src = input.value;
+                });
+            }
+        });
+
+        setTimeout(() => {
+            document.getElementById('pmm').style.height = '750px';
+        }, 1000);
+
+    </script>
 </body>
+
 </html>
