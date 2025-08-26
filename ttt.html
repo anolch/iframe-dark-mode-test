@@ -653,7 +653,9 @@
             symbolSelectionContainer.classList.add('hidden');
             gameContainer.classList.remove('hidden');
 
-            // We no longer call clearBoardInputs here. The game state is loaded by loadPreferences.
+            // FIX: Now that the game container is visible, we need to immediately
+            // clear the board and render it to start a new game.
+            clearBoardInputs();
         };
         
         /**
@@ -800,11 +802,9 @@
 
         selectXButton.addEventListener('click', () => {
             handleSymbolSelection('X');
-            // clearBoardInputs(); is now called inside loadGameState
         });
         selectOButton.addEventListener('click', () => {
             handleSymbolSelection('O');
-            // clearBoardInputs(); is now called inside loadGameState
         });
         
         // The button functionalities have been swapped
