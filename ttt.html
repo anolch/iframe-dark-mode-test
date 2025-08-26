@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>tic-tac-toe</title>
+    <title>Tic-Tac-Toe</title>
     <!-- Use Tailwind CSS for modern styling -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
@@ -153,7 +153,7 @@
 
     <!-- Symbol Selection Screen -->
     <div id="symbol-selection-container" class="hidden flex-col items-center justify-center">
-        <h2 class="text-3xl font-bold mb-6 text-indigo-400">choose your symbol</h2>
+        <h2 class="text-3xl font-bold mb-6 text-indigo-400">Choose Your Symbol</h2>
         <div class="flex space-x-8">
             <!-- Fix: Added x-color and o-color classes to the buttons -->
             <button id="select-x" class="text-7xl font-bold p-8 rounded-full bg-gray-700 hover:bg-gray-600 transition duration-300 transform hover:scale-110 shadow-lg border-4 border-indigo-400 x-color">
@@ -167,7 +167,7 @@
 
     <!-- Main Game Container -->
     <div id="game-container" class="game-container bg-gray-800 p-6 md:p-10 rounded-2xl shadow-2xl w-full max-w-lg hidden">
-        <h1 class="text-4xl font-bold text-center mb-2 text-indigo-400">tic-tac-toe</h1>
+        <h1 class="text-4xl font-bold text-center mb-2 text-indigo-400">Tic-Tac-Toe</h1>
         
         <!-- Game Session ID Display -->
         <div id="session-id-display" class="text-sm font-light text-center mb-6 text-gray-400"></div>
@@ -184,7 +184,7 @@
             </div>
         </div>
 
-        <div id="status-display" class="text-center text-2xl mb-6 font-semibold h-8">your turn!</div>
+        <div id="status-display" class="text-center text-2xl mb-6 font-semibold h-8">Your Turn!</div>
 
         <!-- Tic-Tac-Toe board -->
         <div id="game-board" class="grid grid-cols-3 gap-4 bg-gray-700 p-4 rounded-xl shadow-inner">
@@ -196,13 +196,13 @@
         <!-- Game control buttons -->
         <div class="flex flex-col md:flex-row gap-4 mt-8 justify-center">
             <button id="restart-button" class="bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-3 px-6 rounded-full shadow-lg transition duration-300 transform hover:scale-105">
-                reset game
+                Reset Game
             </button>
             <button id="reset-button" class="bg-red-500 hover:bg-red-600 text-white font-bold py-3 px-6 rounded-full shadow-lg transition duration-300 transform hover:scale-105">
-                clear inputs
+                Clear Inputs
             </button>
             <button id="theme-toggle-button" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-3 px-6 rounded-full shadow-lg transition duration-300 transform hover:scale-105">
-                toggle theme
+                Toggle Theme
             </button>
         </div>
     </div>
@@ -213,7 +213,7 @@
         <div class="message-box">
             <p id="message-text" class="text-3xl font-bold"></p>
             <button id="message-close-button" class="mt-4 bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-4 rounded-full">
-                ok
+                OK
             </button>
         </div>
     </div>
@@ -476,12 +476,12 @@
             winningLine.style.opacity = '0';
             winningLine.classList.remove('x-win-line', 'o-win-line');
             renderBoard();
-            statusDisplay.innerText = "your turn!";
+            statusDisplay.innerText = "Your Turn!";
             saveGameState();
             
             // if the user is the robot, let the robot make the first move
             if (currentPlayer === robotSymbol) {
-                statusDisplay.innerText = "robot's turn...";
+                statusDisplay.innerText = "Robot's Turn...";
                 setTimeout(robotMove, 1000);
             }
         };
@@ -520,14 +520,14 @@
                 playerScore++;
                 playerScoreEl.innerText = playerScore;
                 isGameActive = false;
-                showMessageBox('you won!', 'text-indigo-400', 'win');
+                showMessageBox('You Won!', 'text-indigo-400', 'win');
             } else if (result === 'draw') {
                 isGameActive = false;
-                showMessageBox('it\'s a draw!', 'text-gray-400', 'draw');
+                showMessageBox('It\'s a Draw!', 'text-gray-400', 'draw');
             } else {
                 // if no win or draw, switch to the robot's turn
                 currentPlayer = robotSymbol;
-                statusDisplay.innerText = "robot's turn...";
+                statusDisplay.innerText = "Robot's Turn...";
                 saveGameState(); // Save state after switching turn
                 setTimeout(robotMove, 1000); // delay robot's move for better ux
             }
@@ -551,14 +551,14 @@
                 robotScore++;
                 robotScoreEl.innerText = robotScore;
                 isGameActive = false;
-                showMessageBox('the robot won!', 'text-orange-400', 'lose');
+                showMessageBox('The Robot Won!', 'text-orange-400', 'lose');
             } else if (result === 'draw') {
                 isGameActive = false;
-                showMessageBox('it\'s a draw!', 'text-gray-400', 'draw');
+                showMessageBox('It\'s a Draw!', 'text-gray-400', 'draw');
             } else {
                 // if no win or draw, switch back to the player's turn
                 currentPlayer = userSymbol;
-                statusDisplay.innerText = "your turn!";
+                statusDisplay.innerText = "Your Turn!";
                 saveGameState(); // Save state after switching turn
             }
         };
@@ -635,8 +635,8 @@
             // set the user symbol in a cookie
             document.cookie = `userSymbol=${userSymbol}; path=/; SameSite=Lax`;
             
-            playerSymbolDisplay.innerText = `you (${userSymbol.toLowerCase()})`;
-            robotSymbolDisplay.innerText = `robot (${robotSymbol.toLowerCase()})`;
+            playerSymbolDisplay.innerText = `You (${userSymbol})`;
+            robotSymbolDisplay.innerText = `Robot (${robotSymbol})`;
             
             // Fix: Now adds the correct color classes to the score symbols
             playerSymbolDisplay.classList.remove('x-color', 'o-color');
@@ -736,14 +736,14 @@
                     if (!isGameActive) {
                         const result = checkGameResult();
                         if(result === 'win' || result === 'draw') {
-                            statusDisplay.innerText = "game over!";
+                            statusDisplay.innerText = "Game Over!";
                         }
                     } else if (currentPlayer === robotSymbol) {
-                        statusDisplay.innerText = "robot's turn...";
+                        statusDisplay.innerText = "Robot's Turn...";
                         // re-trigger the robot's move since it was interrupted
                         setTimeout(robotMove, 1000);
                     } else {
-                        statusDisplay.innerText = "your turn!";
+                        statusDisplay.innerText = "Your Turn!";
                     }
                     renderBoard(); // Render the restored board
                 } else {
@@ -781,7 +781,7 @@
                 // Set a simple session cookie. No 'expires' or 'max-age' means it's a session cookie.
                 document.cookie = `gameSessionID=${sessionID}; path=/; SameSite=Lax`;
             }
-            sessionIdDisplay.innerText = `session id: ${sessionID}`;
+            sessionIdDisplay.innerText = `Session ID: ${sessionID}`;
         };
         
         // --- Initialization and Event Listeners ---
