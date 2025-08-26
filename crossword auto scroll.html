@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iframe Dark Mode Test</title>
+    <style>
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .button-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .action-button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .action-button:hover {
+            background-color: #0056b3;
+        }
+
+        .action-button.dark-mode {
+            background-color: #333;
+        }
+
+        .action-button.dark-mode:hover {
+            background-color: #555;
+        }
+
+        /* Dark mode styles for parent site */
+        body.dark-mode {
+            background-color: #1a1a1a;
+            color: #ffffff;
+        }
+
+        body.dark-mode .container {
+            background-color: #2d2d2d;
+            color: #ffffff;
+        }
+
+        body.dark-mode h1 {
+            color: #ffffff;
+        }
+
+        .status-indicator {
+            margin-left: 10px;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .status-indicator.light {
+            color: #b0df41;
+        }
+
+        .status-indicator.dark {
+            color: #ffc107;
+        }
+
+        .iframe-container {
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-top: 20px;
+        }
+
+        iframe {
+            width: 100%;
+            border: none;
+        }
+
+        .puzzle-container {
+            margin-top: 30px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>HTML Ipsum Presents</h1>
+    
+    <p><strong>Pellentesque habitant morbi tristique</strong> senectus et netus et malesuada fames ac turpis egestas.
+        Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas
+        semper. <em>Aenean ultricies mi vitae est.</em> Mauris placerat eleifend leo. Quisque sit amet est et sapien
+        ullamcorper pharetra. Vestibulum erat wisi, condimentum sed, <code>commodo vitae</code>, ornare sit amet, wisi.
+        Aenean fermentum, elit eget tincidunt condimentum, eros ipsum rutrum orci, sagittis tempus lacus enim ac dui. <a
+            href="#">Donec non enim</a> in turpis pulvinar facilisis. Ut felis.</p>
+    
+    <h2>Header Level 2</h2>
+    
+    <ol>
+        <li>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</li>
+        <li>Aliquam tincidunt mauris eu risus.</li>
+    </ol>
+    
+    <blockquote>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus magna. Cras in mi at felis aliquet congue. Ut a
+            est eget ligula molestie gravida. Curabitur massa. Donec eleifend, libero at sagittis mollis, tellus est
+            malesuada tellus, at luctus turpis elit sit amet quam. Vivamus pretium ornare est.</p>
+    </blockquote>
+    
+    <h3>Header Level 3</h3>
+    
+    <ul>
+        <li>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</li>
+        <li>Aliquam tincidunt mauris eu risus.</li>
+    </ul>
+    
+    <pre><code>
+    				#header h1 a {
+    				  display: block;
+    				  width: 300px;
+    				  height: 80px;
+    				}
+    				</code></pre>
+                    <h1>HTML Ipsum Presents</h1>
+                    
+                    <p><strong>Pellentesque habitant morbi tristique</strong> senectus et netus et malesuada fames ac turpis egestas.
+                        Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas
+                        semper. <em>Aenean ultricies mi vitae est.</em> Mauris placerat eleifend leo. Quisque sit amet est et sapien
+                        ullamcorper pharetra. Vestibulum erat wisi, condimentum sed, <code>commodo vitae</code>, ornare sit amet, wisi.
+                        Aenean fermentum, elit eget tincidunt condimentum, eros ipsum rutrum orci, sagittis tempus lacus enim ac dui. <a
+                            href="#">Donec non enim</a> in turpis pulvinar facilisis. Ut felis.</p>
+                    
+                    <h2>Header Level 2</h2>
+                    
+                    <ol>
+                        <li>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</li>
+                        <li>Aliquam tincidunt mauris eu risus.</li>
+                    </ol>
+                    
+                    <blockquote>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus magna. Cras in mi at felis aliquet congue. Ut a
+                            est eget ligula molestie gravida. Curabitur massa. Donec eleifend, libero at sagittis mollis, tellus est
+                            malesuada tellus, at luctus turpis elit sit amet quam. Vivamus pretium ornare est.</p>
+                    </blockquote>
+                    
+                    <h3>Header Level 3</h3>
+                    
+                    <ul>
+                        <li>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</li>
+                        <li>Aliquam tincidunt mauris eu risus.</li>
+                    </ul>
+                    
+                    <pre><code>
+                    				#header h1 a {
+                    				  display: block;
+                    				  width: 300px;
+                    				  height: 80px;
+                    				}
+                    				</code></pre>
+                                    <h1>HTML Ipsum Presents</h1>
+                                    
+                                    <p><strong>Pellentesque habitant morbi tristique</strong> senectus et netus et malesuada fames ac turpis egestas.
+                                        Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas
+                                        semper. <em>Aenean ultricies mi vitae est.</em> Mauris placerat eleifend leo. Quisque sit amet est et sapien
+                                        ullamcorper pharetra. Vestibulum erat wisi, condimentum sed, <code>commodo vitae</code>, ornare sit amet, wisi.
+                                        Aenean fermentum, elit eget tincidunt condimentum, eros ipsum rutrum orci, sagittis tempus lacus enim ac dui. <a
+                                            href="#">Donec non enim</a> in turpis pulvinar facilisis. Ut felis.</p>
+                                    
+                                    <h2>Header Level 2</h2>
+                                    
+                                    <ol>
+                                        <li>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</li>
+                                        <li>Aliquam tincidunt mauris eu risus.</li>
+                                    </ol>
+                                    
+                                    <blockquote>
+                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus magna. Cras in mi at felis aliquet congue. Ut a
+                                            est eget ligula molestie gravida. Curabitur massa. Donec eleifend, libero at sagittis mollis, tellus est
+                                            malesuada tellus, at luctus turpis elit sit amet quam. Vivamus pretium ornare est.</p>
+                                    </blockquote>
+                                    
+                                    <h3>Header Level 3</h3>
+                                    
+                                    <ul>
+                                        <li>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</li>
+                                        <li>Aliquam tincidunt mauris eu risus.</li>
+                                    </ul>
+                                    
+                                    <pre><code>
+                                    				#header h1 a {
+                                    				  display: block;
+                                    				  width: 300px;
+                                    				  height: 80px;
+                                    				}
+                                    				</code></pre>
+                                                    <h1>HTML Ipsum Presents</h1>
+                                                    
+                                                    <p><strong>Pellentesque habitant morbi tristique</strong> senectus et netus et malesuada fames ac turpis egestas.
+                                                        Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas
+                                                        semper. <em>Aenean ultricies mi vitae est.</em> Mauris placerat eleifend leo. Quisque sit amet est et sapien
+                                                        ullamcorper pharetra. Vestibulum erat wisi, condimentum sed, <code>commodo vitae</code>, ornare sit amet, wisi.
+                                                        Aenean fermentum, elit eget tincidunt condimentum, eros ipsum rutrum orci, sagittis tempus lacus enim ac dui. <a
+                                                            href="#">Donec non enim</a> in turpis pulvinar facilisis. Ut felis.</p>
+                                                    
+                                                    <h2>Header Level 2</h2>
+                                                    
+                                                    <ol>
+                                                        <li>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</li>
+                                                        <li>Aliquam tincidunt mauris eu risus.</li>
+                                                    </ol>
+                                                    
+                                                    <blockquote>
+                                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus magna. Cras in mi at felis aliquet congue. Ut a
+                                                            est eget ligula molestie gravida. Curabitur massa. Donec eleifend, libero at sagittis mollis, tellus est
+                                                            malesuada tellus, at luctus turpis elit sit amet quam. Vivamus pretium ornare est.</p>
+                                                    </blockquote>
+                                                    
+                                                    <h3>Header Level 3</h3>
+                                                    
+                                                    <ul>
+                                                        <li>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</li>
+                                                        <li>Aliquam tincidunt mauris eu risus.</li>
+                                                    </ul>
+                                                    
+                                                    <pre><code>
+                                                    				#header h1 a {
+                                                    				  display: block;
+                                                    				  width: 300px;
+                                                        				  height: 80px;
+                                                    				}
+                                                    				</code></pre>
+
+        <iframe id="puzzleIframe" height="700px" width="100%" allow="web-share; fullscreen" aria-label="Puzzle Me Game"
+            referrerpolicy="noreferrer" src="https://staging.amuselabs.com/pmm/crossword?id=7d194b1c&set=c2458bc57b56effe01733e82cf68df6e244c9201338d0e55628240b208d6ad48&picker=date-picker&src=&uid=uid_1751953908823_y1s6kg6mp&test=1&darkMode=1"></iframe>
+</body>
+
+</html>
