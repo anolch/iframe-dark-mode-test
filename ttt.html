@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tic-Tac-Toe</title>
+    <title>tic-tac-toe</title>
     <!-- Use Tailwind CSS for modern styling -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
@@ -74,6 +74,19 @@
 
         body.light-mode .o-win-line {
             background: linear-gradient(to right, #dd6b20, #f6ad55);
+        }
+
+        /* FIX: Styling for symbol selection buttons in light mode */
+        body.light-mode #select-x,
+        body.light-mode #select-o {
+            background-color: #cbd5e0;
+            /* Match with other light mode components */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        body.light-mode #select-x:hover,
+        body.light-mode #select-o:hover {
+            background-color: #e2e8f0;
         }
 
         /* Common Styles */
@@ -168,7 +181,7 @@
 
     <!-- Symbol Selection Screen -->
     <div id="symbol-selection-container" class="hidden flex-col items-center justify-center">
-        <h2 class="text-3xl font-bold mb-6 text-indigo-400">Choose Your Symbol</h2>
+        <h2 class="text-3xl font-bold mb-6 text-indigo-400">choose your symbol</h2>
         <div class="flex space-x-8">
             <!-- Fix: Added x-color and o-color classes to the buttons -->
             <button id="select-x"
@@ -185,7 +198,7 @@
     <!-- Main Game Container -->
     <div id="game-container"
         class="game-container bg-gray-800 p-6 md:p-10 rounded-2xl shadow-2xl w-full max-w-lg hidden">
-        <h1 class="text-4xl font-bold text-center mb-2 text-indigo-400">Tic-Tac-Toe</h1>
+        <h1 class="text-4xl font-bold text-center mb-2 text-indigo-400">tic-tac-toe</h1>
 
         <!-- Game Session ID Display -->
         <div id="session-id-display" class="text-sm font-light text-center mb-6 text-gray-400"></div>
@@ -202,7 +215,7 @@
             </div>
         </div>
 
-        <div id="status-display" class="text-center text-2xl mb-6 font-semibold h-8">Your Turn!</div>
+        <div id="status-display" class="text-center text-2xl mb-6 font-semibold h-8">your turn!</div>
 
         <!-- Tic-Tac-Toe board -->
         <div id="game-board" class="grid grid-cols-3 gap-4 bg-gray-700 p-4 rounded-xl shadow-inner">
@@ -215,15 +228,15 @@
         <div class="flex flex-col md:flex-row gap-4 mt-8 justify-center">
             <button id="restart-button"
                 class="bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-3 px-6 rounded-full shadow-lg transition duration-300 transform hover:scale-105">
-                Restart Game
+                reset game
             </button>
             <button id="reset-button"
                 class="bg-red-500 hover:bg-red-600 text-white font-bold py-3 px-6 rounded-full shadow-lg transition duration-300 transform hover:scale-105">
-                Reset Scores
+                clear inputs
             </button>
             <button id="theme-toggle-button"
                 class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-3 px-6 rounded-full shadow-lg transition duration-300 transform hover:scale-105">
-                Toggle Theme
+                toggle theme
             </button>
         </div>
     </div>
@@ -235,7 +248,7 @@
             <p id="message-text" class="text-3xl font-bold"></p>
             <button id="message-close-button"
                 class="mt-4 bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-4 rounded-full">
-                OK
+                ok
             </button>
         </div>
     </div>
@@ -294,7 +307,7 @@
         // --- Function Definitions ---
 
         /**
-         * Renders the Tic-Tac-Toe board cells dynamically.
+         * Renders the tic-tac-toe board cells dynamically.
          */
         const renderBoard = () => {
             // Clear existing cells, but keep the winning-line element
@@ -318,7 +331,7 @@
                 );
                 cellElement.dataset.index = index;
                 cellElement.innerText = cell;
-                // Fix: `board-cell.x-color` and `board-cell.o-color` now apply correctly
+
                 if (cell === 'X') cellElement.classList.add('x-color');
                 if (cell === 'O') cellElement.classList.add('o-color');
                 cellElement.addEventListener('click', handleCellClick);
@@ -328,8 +341,8 @@
 
         /**
          * Draws a line across the winning cells.
-         * @param {number[]} combo - The array of winning cell indices.
-         * @param {string} winnerSymbol - The symbol of the winning player.
+         * @param {number[]} combo - the array of winning cell indices.
+         * @param {string} winnerSymbol - the symbol of the winning player.
          */
         const drawWinningLine = (combo, winnerSymbol) => {
             const cells = gameBoard.querySelectorAll('.board-cell');
@@ -401,8 +414,8 @@
 
         /**
          * Shows a message box with the given text.
-         * @param {string} text - The message to display.
-         * @param {string} color - The color class for the text.
+         * @param {string} text - the message to display.
+         * @param {string} color - the color class for the text.
          * @param {string} resultType - 'win', 'lose', or 'draw'
          */
         const showMessageBox = (text, color, resultType) => {
@@ -440,31 +453,14 @@
         };
 
         /**
-         * Resets the board and shows the symbol selection screen, but keeps scores.
+         * Handles the "Reset Game" button logic.
+         * This performs a full reset: clears everything except the theme,
+         * and prompts the user to select a symbol again.
          */
-        const restartGame = () => {
-            isGameActive = true;
-            for (let i = 0; i < board.length; i++) {
-                board[i] = '';
-            }
-            winningLine.style.width = '0';
-            winningLine.style.opacity = '0';
-            winningLine.classList.remove('x-win-line', 'o-win-line');
-            renderBoard();
-            statusDisplay.innerText = "Choose your symbol!";
-
-            // Hide the game board and show the symbol selection screen
-            gameContainer.classList.add('hidden');
-            symbolSelectionContainer.classList.remove('hidden');
-        };
-
-        /**
-         * Resets the entire game, including scores and session data.
-         */
-        const resetGame = () => {
-            // New: Clear all relevant data from localStorage and cookies
+        const resetGameAndSymbol = () => {
+            // Clear game state and symbol cookies/local storage.
+            // Note: We are specifically keeping the theme preference.
             localStorage.removeItem('ticTacToeState');
-            localStorage.removeItem('themePreference');
             document.cookie = `userSymbol=; path=/; SameSite=Lax; expires=Thu, 01 Jan 1970 00:00:00 GMT`;
             document.cookie = `gameSessionID=; path=/; SameSite=Lax; expires=Thu, 01 Jan 1970 00:00:00 GMT`;
 
@@ -495,6 +491,34 @@
             winningLine.classList.remove('x-win-line', 'o-win-line');
             renderBoard();
             statusDisplay.innerText = '';
+
+            // Generate a new session ID
+            setSessionAndDisplayID();
+        };
+
+        /**
+         * Handles the "Clear Inputs" button logic.
+         * This performs a soft reset: only clears the board to start a new game,
+         * keeping scores and symbols.
+         */
+        const clearBoardInputs = () => {
+            isGameActive = true;
+            currentPlayer = userSymbol;
+            for (let i = 0; i < board.length; i++) {
+                board[i] = '';
+            }
+            winningLine.style.width = '0';
+            winningLine.style.opacity = '0';
+            winningLine.classList.remove('x-win-line', 'o-win-line');
+            renderBoard();
+            statusDisplay.innerText = "your turn!";
+            saveGameState();
+
+            // if the user is the robot, let the robot make the first move
+            if (currentPlayer === robotSymbol) {
+                statusDisplay.innerText = "robot's turn...";
+                setTimeout(robotMove, 1000);
+            }
         };
 
         /**
@@ -503,12 +527,13 @@
         const closeMessageBox = () => {
             messageContainer.classList.add('hidden');
             messageText.classList.remove('text-indigo-400', 'text-orange-400', 'text-gray-400');
-            restartGame();
+            // This button now performs a soft reset, keeping scores and symbol
+            clearBoardInputs();
         };
 
         /**
          * Handles a user's click on a board cell.
-         * @param {Event} event - The click event object.
+         * @param {Event} event - the click event object.
          */
         const handleCellClick = (event) => {
             const clickedCell = event.target;
@@ -521,7 +546,6 @@
 
             // Update the board and UI
             board[clickedCellIndex] = userSymbol;
-            // The `renderBoard()` function will handle adding the correct color class
             renderBoard();
 
             // Check for game result after the player's move
@@ -530,28 +554,28 @@
                 playerScore++;
                 playerScoreEl.innerText = playerScore;
                 isGameActive = false;
-                showMessageBox('You won!', 'text-indigo-400', 'win');
+                showMessageBox('you won!', 'text-indigo-400', 'win');
             } else if (result === 'draw') {
                 isGameActive = false;
-                showMessageBox('It\'s a draw!', 'text-gray-400', 'draw');
+                showMessageBox('it\'s a draw!', 'text-gray-400', 'draw');
             } else {
-                // If no win or draw, switch to the robot's turn
+                // if no win or draw, switch to the robot's turn
                 currentPlayer = robotSymbol;
-                statusDisplay.innerText = "Robot's Turn...";
+                statusDisplay.innerText = "robot's turn...";
                 saveGameState();
-                setTimeout(robotMove, 1000); // Delay robot's move for better UX
+                setTimeout(robotMove, 1000); // delay robot's move for better ux
             }
         };
 
         /**
-         * Implements the robot's (AI) move logic.
+         * Implements the robot's (ai) move logic.
          */
         const robotMove = () => {
             // Find best move based on priority
             const bestMove = getBestMove();
             if (bestMove !== -1) {
                 board[bestMove] = robotSymbol;
-                renderBoard(); // Re-render the board to show robot's move
+                renderBoard(); // re-render the board to show robot's move
             }
 
             // Check for game result after the robot's move
@@ -560,21 +584,21 @@
                 robotScore++;
                 robotScoreEl.innerText = robotScore;
                 isGameActive = false;
-                showMessageBox('The robot won!', 'text-orange-400', 'lose');
+                showMessageBox('the robot won!', 'text-orange-400', 'lose');
             } else if (result === 'draw') {
                 isGameActive = false;
-                showMessageBox('It\'s a draw!', 'text-gray-400', 'draw');
+                showMessageBox('it\'s a draw!', 'text-gray-400', 'draw');
             } else {
-                // If no win or draw, switch back to the player's turn
+                // if no win or draw, switch back to the player's turn
                 currentPlayer = userSymbol;
-                statusDisplay.innerText = "Your Turn!";
+                statusDisplay.innerText = "your turn!";
                 saveGameState();
             }
         };
 
         /**
-         * Logic for the robot's moves (simple unbeatable AI).
-         * @returns {number} The index of the best move.
+         * Logic for the robot's moves (simple unbeatable ai).
+         * @returns {number} the index of the best move.
          */
         const getBestMove = () => {
             const availableMoves = board.map((val, index) => val === '' ? index : null).filter(val => val !== null);
@@ -616,14 +640,14 @@
                 return availableSides[Math.floor(Math.random() * availableSides.length)];
             }
 
-            return -1; // No move found (should not happen in a valid game state)
+            return -1; // no move found (should not happen in a valid game state)
         };
 
         /**
          * Checks if the current board has a winner for a given player.
-         * @param {string[]} currentBoard - The board state to check.
-         * @param {string} player - The player ('X' or 'O') to check for.
-         * @returns {boolean} True if the player has won, false otherwise.
+         * @param {string[]} currentBoard - the board state to check.
+         * @param {string} player - the player ('X' or 'O') to check for.
+         * @returns {boolean} true if the player has won, false otherwise.
          */
         const checkWin = (currentBoard, player) => {
             return winningConditions.some(condition => {
@@ -635,17 +659,17 @@
 
         /**
          * Handles the symbol selection and starts the game.
-         * @param {string} symbol - The symbol chosen by the user ('X' or 'O').
+         * @param {string} symbol - the symbol chosen by the user ('X' or 'O').
          */
         const handleSymbolSelection = (symbol) => {
             userSymbol = symbol;
             robotSymbol = (symbol === 'X') ? 'O' : 'X';
 
-            // Set the user symbol in a cookie
+            // set the user symbol in a cookie
             document.cookie = `userSymbol=${userSymbol}; path=/; SameSite=Lax`;
 
-            playerSymbolDisplay.innerText = `You (${userSymbol})`;
-            robotSymbolDisplay.innerText = `Robot (${robotSymbol})`;
+            playerSymbolDisplay.innerText = `you (${userSymbol.toLowerCase()})`;
+            robotSymbolDisplay.innerText = `robot (${robotSymbol.toLowerCase()})`;
 
             // Fix: Now adds the correct color classes to the score symbols
             playerSymbolDisplay.classList.remove('x-color', 'o-color');
@@ -663,23 +687,13 @@
             gameContainer.classList.remove('hidden');
 
             // Now, we restart the game from this point
-            isGameActive = true;
-            currentPlayer = userSymbol;
-            renderBoard();
-            statusDisplay.innerText = "Your Turn!";
-            saveGameState();
-
-            // If the user is the robot, let the robot make the first move
-            if (currentPlayer === robotSymbol) {
-                statusDisplay.innerText = "Robot's Turn...";
-                setTimeout(robotMove, 1000);
-            }
+            clearBoardInputs();
         };
 
         /**
          * Gets a cookie by its name.
-         * @param {string} name - The name of the cookie.
-         * @returns {string|null} The cookie value, or null if not found.
+         * @param {string} name - the name of the cookie.
+         * @returns {string|null} the cookie value, or null if not found.
          */
         const getCookie = (name) => {
             const value = `; ${document.cookie}`;
@@ -699,11 +713,13 @@
 
         /**
          * Loads the user's theme preference and symbol choice from storage.
+         * Now, defaults to light mode if no preference is found.
          */
         const loadPreferences = () => {
             // Load theme from localStorage
             const savedTheme = localStorage.getItem('themePreference');
-            if (savedTheme === 'light') {
+            // If the saved theme is not explicitly 'dark', default to light mode.
+            if (savedTheme !== 'dark') {
                 document.body.classList.add('light-mode');
             }
 
@@ -726,7 +742,7 @@
                 if (savedState) {
                     const gameState = JSON.parse(savedState);
 
-                    // Restore board, scores, current player, and active state
+                    // restore board, scores, current player, and active state
                     if (Array.isArray(gameState.board) && gameState.board.length === 9) {
                         for (let i = 0; i < board.length; i++) {
                             board[i] = gameState.board[i] || '';
@@ -748,33 +764,33 @@
                     playerScoreEl.innerText = playerScore;
                     robotScoreEl.innerText = robotScore;
 
-                    // Handle game state on load
+                    // handle game state on load
                     if (!isGameActive) {
                         const result = checkGameResult();
                         if (result === 'win' || result === 'draw') {
-                            statusDisplay.innerText = "Game Over!";
+                            statusDisplay.innerText = "game over!";
                         }
                     } else if (currentPlayer === robotSymbol) {
-                        statusDisplay.innerText = "Robot's Turn...";
-                        // Re-trigger the robot's move since it was interrupted
+                        statusDisplay.innerText = "robot's turn...";
+                        // re-trigger the robot's move since it was interrupted
                         setTimeout(robotMove, 1000);
                     } else {
-                        statusDisplay.innerText = "Your Turn!";
+                        statusDisplay.innerText = "your turn!";
                     }
                 }
             } catch (error) {
-                console.error("Failed to load game state from localStorage:", error);
-                // Clear invalid data to avoid future errors
+                console.error("failed to load game state from localStorage:", error);
+                // clear invalid data to avoid future errors
                 localStorage.removeItem('ticTacToeState');
             }
         };
 
         /**
          * Generates a simple 7-digit alphanumeric ID.
-         * @returns {string} A 7-digit alphanumeric string.
+         * @returns {string} a 7-digit alphanumeric string.
          */
         const generateAlphaNumericID = () => {
-            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+            const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
             let result = '';
             for (let i = 0; i < 7; i++) {
                 result += chars.charAt(Math.floor(Math.random() * chars.length));
@@ -792,7 +808,7 @@
                 // Set a simple session cookie. No 'expires' or 'max-age' means it's a session cookie.
                 document.cookie = `gameSessionID=${sessionID}; path=/; SameSite=Lax`;
             }
-            sessionIdDisplay.innerText = `Session ID: ${sessionID}`;
+            sessionIdDisplay.innerText = `session id: ${sessionID}`;
         };
 
         // --- Initialization and Event Listeners ---
@@ -801,7 +817,7 @@
             try {
                 jsConfetti = new JSConfetti({ canvas: confettiCanvas });
             } catch (e) {
-                console.error("Failed to initialize js-confetti:", e);
+                console.error("failed to initialize js-confetti:", e);
             }
 
             setSessionAndDisplayID();
@@ -811,8 +827,11 @@
 
         selectXButton.addEventListener('click', () => handleSymbolSelection('X'));
         selectOButton.addEventListener('click', () => handleSymbolSelection('O'));
-        restartButton.addEventListener('click', restartGame);
-        resetButton.addEventListener('click', resetGame);
+
+        // The button functionalities have been swapped
+        restartButton.addEventListener('click', resetGameAndSymbol);
+        resetButton.addEventListener('click', clearBoardInputs);
+
         themeToggleButton.addEventListener('click', toggleTheme);
         messageCloseButton.addEventListener('click', closeMessageBox);
     </script>
