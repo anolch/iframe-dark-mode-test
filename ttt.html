@@ -746,11 +746,15 @@
                         statusDisplay.innerText = "your turn!";
                     }
                     renderBoard(); // Render the restored board
+                } else {
+                    // This is the added fix: If no saved state is found, start a new game.
+                    clearBoardInputs();
                 }
             } catch (error) {
                 console.error("failed to load game state from localStorage:", error);
                 // clear invalid data to avoid future errors
                 localStorage.removeItem('ticTacToeState');
+                clearBoardInputs(); // Also clear if there's an error
             }
         };
 
@@ -796,11 +800,11 @@
 
         selectXButton.addEventListener('click', () => {
             handleSymbolSelection('X');
-            clearBoardInputs(); // Start a fresh game after selection
+            // clearBoardInputs(); is now called inside loadGameState
         });
         selectOButton.addEventListener('click', () => {
             handleSymbolSelection('O');
-            clearBoardInputs(); // Start a fresh game after selection
+            // clearBoardInputs(); is now called inside loadGameState
         });
         
         // The button functionalities have been swapped
