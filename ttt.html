@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,8 +10,7 @@
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #1a202c;
-            /* Dark background */
+            background-color: #1a202c; /* Dark background */
             transition: background-color 0.3s;
             display: flex;
             justify-content: center;
@@ -24,80 +22,59 @@
 
         /* Light Mode Styles */
         body.light-mode {
-            background-color: #f7fafc;
-            /* Light background */
+            background-color: #f7fafc; /* Light background */
             color: #2d3748;
         }
-
         body.light-mode .game-container {
             background-color: #e2e8f0;
             box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
         }
-
         body.light-mode .board-cell {
             background-color: #cbd5e0;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
-
         body.light-mode .board-cell:hover {
             background-color: #e2e8f0;
         }
-
         body.light-mode #game-board {
             background-color: #a0aec0;
             box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
         }
-
         body.light-mode .x-color {
-            color: #3182ce;
-            /* A slightly darker blue for contrast */
+            color: #3182ce; /* A slightly darker blue for contrast */
         }
-
         body.light-mode .o-color {
-            color: #dd6b20;
-            /* A slightly darker orange */
+            color: #dd6b20; /* A slightly darker orange */
         }
-
         body.light-mode #status-display {
             color: #4a5568;
         }
-
         body.light-mode .score-text {
-            color: #4a5568;
-            /* Dark color for score in light mode */
+            color: #4a5568; /* Dark color for score in light mode */
         }
-
         body.light-mode .x-win-line {
             background: linear-gradient(to right, #3182ce, #4299e1);
         }
-
         body.light-mode .o-win-line {
             background: linear-gradient(to right, #dd6b20, #f6ad55);
         }
-
+        
         /* Common Styles */
         .board-cell {
             transition: background-color 0.2s, transform 0.2s;
             /* Ensures cells are always perfect squares */
             aspect-ratio: 1 / 1;
         }
-
         .board-cell:hover {
-            background-color: #2d3748;
-            /* Darker hover effect */
+            background-color: #2d3748; /* Darker hover effect */
             transform: scale(1.05);
         }
-
         .board-cell.x-color {
-            color: #90cdf4;
-            /* Light blue for 'X' */
+            color: #90cdf4; /* Light blue for 'X' */
         }
-
         .board-cell.o-color {
-            color: #f6ad55;
-            /* Orange for 'O' */
+            color: #f6ad55; /* Orange for 'O' */
         }
-
         .message-box {
             position: fixed;
             top: 50%;
@@ -110,7 +87,6 @@
             text-align: center;
             z-index: 1000;
         }
-
         .message-overlay {
             position: fixed;
             top: 0;
@@ -120,7 +96,7 @@
             background-color: rgba(0, 0, 0, 0.7);
             z-index: 999;
         }
-
+        
         /* Winning Line Styles */
         #winning-line {
             position: absolute;
@@ -129,21 +105,17 @@
             transition: width 0.5s ease-out, transform 0.5s ease-out;
             transform-origin: left;
             z-index: 10;
-
+            
         }
-
         #game-board {
-            position: relative;
-            /* Needed for positioning the winning line */
-            overflow: hidden;
-            /* Ensures the line doesn't go outside the board */
+            position: relative; /* Needed for positioning the winning line */
+            overflow: hidden; /* Ensures the line doesn't go outside the board */
         }
 
         /* Specific winning line colors */
         .x-win-line {
             background: linear-gradient(to right, #90cdf4, #4299e1);
         }
-
         .o-win-line {
             background: linear-gradient(to right, #f6ad55, #ed8936);
         }
@@ -160,7 +132,6 @@
         }
     </style>
 </head>
-
 <body class="bg-gray-900 text-white flex items-center justify-center min-h-screen">
     <canvas id="confetti-canvas"></canvas>
 
@@ -168,21 +139,21 @@
     <div id="symbol-selection-container" class="hidden flex-col items-center justify-center">
         <h2 class="text-3xl font-bold mb-6 text-indigo-400">Choose Your Symbol</h2>
         <div class="flex space-x-8">
-            <button id="select-x"
-                class="text-7xl font-bold p-8 rounded-full bg-gray-700 hover:bg-gray-600 transition duration-300 transform hover:scale-110 shadow-lg border-4 border-indigo-400">
+            <button id="select-x" class="text-7xl font-bold p-8 rounded-full bg-gray-700 hover:bg-gray-600 transition duration-300 transform hover:scale-110 shadow-lg border-4 border-indigo-400">
                 X
             </button>
-            <button id="select-o"
-                class="text-7xl font-bold p-8 rounded-full bg-gray-700 hover:bg-gray-600 transition duration-300 transform hover:scale-110 shadow-lg border-4 border-orange-400">
+            <button id="select-o" class="text-7xl font-bold p-8 rounded-full bg-gray-700 hover:bg-gray-600 transition duration-300 transform hover:scale-110 shadow-lg border-4 border-orange-400">
                 O
             </button>
         </div>
     </div>
 
     <!-- Main Game Container -->
-    <div id="game-container"
-        class="game-container bg-gray-800 p-6 md:p-10 rounded-2xl shadow-2xl w-full max-w-lg hidden">
-        <h1 class="text-4xl font-bold text-center mb-6 text-indigo-400">Tic-Tac-Toe</h1>
+    <div id="game-container" class="game-container bg-gray-800 p-6 md:p-10 rounded-2xl shadow-2xl w-full max-w-lg hidden">
+        <h1 class="text-4xl font-bold text-center mb-2 text-indigo-400">Tic-Tac-Toe</h1>
+        
+        <!-- Game Session ID Display -->
+        <div id="session-id-display" class="text-sm font-light text-center mb-6 text-gray-400"></div>
 
         <!-- Player and Robot score display -->
         <div class="flex justify-around text-lg font-semibold mb-6">
@@ -207,16 +178,13 @@
 
         <!-- Game control buttons -->
         <div class="flex flex-col md:flex-row gap-4 mt-8 justify-center">
-            <button id="restart-button"
-                class="bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-3 px-6 rounded-full shadow-lg transition duration-300 transform hover:scale-105">
+            <button id="restart-button" class="bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-3 px-6 rounded-full shadow-lg transition duration-300 transform hover:scale-105">
                 Restart Game
             </button>
-            <button id="reset-button"
-                class="bg-red-500 hover:bg-red-600 text-white font-bold py-3 px-6 rounded-full shadow-lg transition duration-300 transform hover:scale-105">
+            <button id="reset-button" class="bg-red-500 hover:bg-red-600 text-white font-bold py-3 px-6 rounded-full shadow-lg transition duration-300 transform hover:scale-105">
                 Reset Scores
             </button>
-            <button id="theme-toggle-button"
-                class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-3 px-6 rounded-full shadow-lg transition duration-300 transform hover:scale-105">
+            <button id="theme-toggle-button" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-3 px-6 rounded-full shadow-lg transition duration-300 transform hover:scale-105">
                 Toggle Theme
             </button>
         </div>
@@ -227,13 +195,12 @@
         <div class="message-overlay"></div>
         <div class="message-box">
             <p id="message-text" class="text-3xl font-bold"></p>
-            <button id="message-close-button"
-                class="mt-4 bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-4 rounded-full">
+            <button id="message-close-button" class="mt-4 bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-4 rounded-full">
                 OK
             </button>
         </div>
     </div>
-
+    
     <!-- Confetti Library -->
     <script src="https://cdn.jsdelivr.net/npm/js-confetti@latest/dist/js-confetti.min.js"></script>
 
@@ -276,7 +243,8 @@
         const messageCloseButton = document.getElementById('message-close-button');
         const winningLine = document.getElementById('winning-line');
         const confettiCanvas = document.getElementById('confetti-canvas');
-
+        const sessionIdDisplay = document.getElementById('session-id-display');
+        
         // Symbol selection elements
         const symbolSelectionContainer = document.getElementById('symbol-selection-container');
         const selectXButton = document.getElementById('select-x');
@@ -348,7 +316,7 @@
             winningLine.style.top = `${startY}px`;
             winningLine.style.transform = `rotate(${angle}deg)`;
             winningLine.style.opacity = '1';
-
+            
             // Set the color based on the winner
             if (winnerSymbol === 'X') {
                 winningLine.classList.add('x-win-line');
@@ -411,12 +379,12 @@
                     });
                 }
             } else if (resultType === 'lose') {
-                // A subtle visual effect for losing
-                messageBox.style.animation = 'shake 0.5s';
-                setTimeout(() => messageBox.style.animation = '', 500);
+                 // A subtle visual effect for losing
+                 messageBox.style.animation = 'shake 0.5s';
+                 setTimeout(() => messageBox.style.animation = '', 500);
             }
         };
-
+        
         /**
          * Saves the current game state to localStorage.
          */
@@ -428,7 +396,8 @@
                 currentPlayer: currentPlayer,
                 isGameActive: isGameActive
             };
-            localStorage.setItem('ticTacToeState', JSON.stringify(gameState));
+            // Use the session ID in the localStorage key for persistence
+            localStorage.setItem(`ticTacToeState-${sessionID}`, JSON.stringify(gameState));
         };
 
         /**
@@ -446,7 +415,7 @@
             renderBoard();
             statusDisplay.innerText = "Your Turn!";
             saveGameState();
-
+            
             // If the user is the robot, let the robot make the first move
             if (currentPlayer === robotSymbol) {
                 statusDisplay.innerText = "Robot's Turn...";
@@ -464,7 +433,7 @@
             robotScoreEl.innerText = robotScore;
             restartGame();
         };
-
+        
         /**
          * Closes the message box and restarts the game.
          */
@@ -608,27 +577,41 @@
         const handleSymbolSelection = (symbol) => {
             userSymbol = symbol;
             robotSymbol = (symbol === 'X') ? 'O' : 'X';
-            localStorage.setItem('userSymbol', userSymbol);
-
+            
+            // Set the user symbol in a cookie
+            document.cookie = `userSymbol=${userSymbol}; path=/; SameSite=Lax`;
+            
             playerSymbolDisplay.innerText = `You (${userSymbol})`;
             robotSymbolDisplay.innerText = `Robot (${robotSymbol})`;
-
+            
             // Clear existing classes and add new ones based on the symbol
             playerSymbolDisplay.classList.remove('text-indigo-400', 'text-orange-400');
             robotSymbolDisplay.classList.remove('text-indigo-400', 'text-orange-400');
 
             if (userSymbol === 'X') {
-                playerSymbolDisplay.classList.add('text-indigo-400');
-                robotSymbolDisplay.classList.add('text-orange-400');
+                playerSymbolDisplay.classList.add('x-color');
+                robotSymbolDisplay.classList.add('o-color');
             } else {
-                playerSymbolDisplay.classList.add('text-orange-400');
-                robotSymbolDisplay.classList.add('text-indigo-400');
+                playerSymbolDisplay.classList.add('o-color');
+                robotSymbolDisplay.classList.add('x-color');
             }
 
             symbolSelectionContainer.classList.add('hidden');
             gameContainer.classList.remove('hidden');
 
             restartGame();
+        };
+        
+        /**
+         * Gets a cookie by its name.
+         * @param {string} name - The name of the cookie.
+         * @returns {string|null} The cookie value, or null if not found.
+         */
+        const getCookie = (name) => {
+            const value = `; ${document.cookie}`;
+            const parts = value.split(`; ${name}=`);
+            if (parts.length === 2) return parts.pop().split(';').shift();
+            return null;
         };
 
         /**
@@ -641,15 +624,21 @@
         };
 
         /**
-         * Loads the user's theme preference and symbol choice from localStorage.
+         * Loads the user's theme preference and symbol choice from storage.
          */
         const loadPreferences = () => {
+            // Load theme from localStorage
             const savedTheme = localStorage.getItem('themePreference');
-            if (savedTheme === 'light') {
+            if (savedTheme === 'light' || !savedTheme) { // Default to light mode if no preference is found
                 document.body.classList.add('light-mode');
+                // Save the preference if it was not already set
+                if (!savedTheme) {
+                    localStorage.setItem('themePreference', 'light');
+                }
             }
 
-            const savedSymbol = localStorage.getItem('userSymbol');
+            // Load user symbol from cookie
+            const savedSymbol = getCookie('userSymbol');
             if (savedSymbol) {
                 handleSymbolSelection(savedSymbol);
                 loadGameState();
@@ -663,13 +652,14 @@
          */
         const loadGameState = () => {
             try {
-                const savedState = localStorage.getItem('ticTacToeState');
+                // Use the session ID from the cookie to load the correct game state
+                const savedState = localStorage.getItem(`ticTacToeState-${sessionID}`);
                 if (savedState) {
                     const gameState = JSON.parse(savedState);
-
+                    
                     // Restore board, scores, current player, and active state
                     if (Array.isArray(gameState.board) && gameState.board.length === 9) {
-                        for (let i = 0; i < board.length; i++) {
+                        for(let i = 0; i < board.length; i++) {
                             board[i] = gameState.board[i] || '';
                         }
                     }
@@ -685,14 +675,14 @@
                     if (typeof gameState.isGameActive === 'boolean') {
                         isGameActive = gameState.isGameActive;
                     }
-
+                    
                     playerScoreEl.innerText = playerScore;
                     robotScoreEl.innerText = robotScore;
-
+                    
                     // Handle game state on load
                     if (!isGameActive) {
                         const result = checkGameResult();
-                        if (result === 'win' || result === 'draw') {
+                        if(result === 'win' || result === 'draw') {
                             statusDisplay.innerText = "Game Over!";
                         }
                     } else if (currentPlayer === robotSymbol) {
@@ -706,59 +696,47 @@
             } catch (error) {
                 console.error("Failed to load game state from localStorage:", error);
                 // Clear invalid data to avoid future errors
-                localStorage.removeItem('ticTacToeState');
+                localStorage.removeItem(`ticTacToeState-${sessionID}`);
             }
         };
 
         /**
-         * Generates a simple UUID for session tracking.
-         * @returns {string} A UUID string.
+         * Generates a simple 7-digit alphanumeric ID.
+         * @returns {string} A 7-digit alphanumeric string.
          */
-        const generateUUID = () => {
-            return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-                var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
-                return v.toString(16);
-            });
+        const generateAlphaNumericID = () => {
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+            let result = '';
+            for (let i = 0; i < 7; i++) {
+                result += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            return result;
         };
 
         /**
-         * Sets a session cookie to track the game session.
+         * Sets a session cookie and displays the session ID.
          */
-        const setSessionCookie = () => {
-            // Get the current session ID from the cookie, or generate a new one
-            const getCookie = (name) => {
-                const value = `; ${document.cookie}`;
-                const parts = value.split(`; ${name}=`);
-                if (parts.length === 2) return parts.pop().split(';').shift();
-            };
-
+        const setSessionAndDisplayID = () => {
             sessionID = getCookie('gameSessionID');
             if (!sessionID) {
-                sessionID = generateUUID();
+                sessionID = generateAlphaNumericID();
                 // Set a simple session cookie. No 'expires' or 'max-age' means it's a session cookie.
-                // The 'path=/' makes it available for the entire site.
-                // 'SameSite=Lax' is a good default for security.
                 document.cookie = `gameSessionID=${sessionID}; path=/; SameSite=Lax`;
             }
+            sessionIdDisplay.innerText = `Session ID: ${sessionID}`;
         };
-
+        
         // --- Initialization and Event Listeners ---
         window.onload = () => {
             // Initialize js-confetti once the page is fully loaded
-            // Check if JSConfetti is defined before attempting to use it.
-            // This prevents a ReferenceError if the library fails to load or loads after the script.
-            if (typeof JSConfetti !== 'undefined') {
-                try {
-                    jsConfetti = new JSConfetti({ canvas: confettiCanvas });
-                } catch (e) {
-                    console.error("Failed to initialize js-confetti:", e);
-                }
-            } else {
-                console.error("JSConfetti library not loaded.");
+            try {
+                jsConfetti = new JSConfetti({ canvas: confettiCanvas });
+            } catch (e) {
+                console.error("Failed to initialize js-confetti:", e);
             }
 
+            setSessionAndDisplayID();
             loadPreferences();
-            setSessionCookie();
             renderBoard();
         };
 
@@ -770,5 +748,4 @@
         messageCloseButton.addEventListener('click', closeMessageBox);
     </script>
 </body>
-
 </html>
