@@ -34,23 +34,6 @@
             box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
         }
 
-        body.light-mode .symbol-selection-container {
-            background-color: #e2e8f0;
-            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
-        }
-
-        body.light-mode .symbol-selection-container h2 {
-            color: #4c51bf;
-        }
-
-        body.light-mode .symbol-selection-container button {
-            background-color: #cbd5e0;
-        }
-
-        body.light-mode .symbol-selection-container button:hover {
-            background-color: #e2e8f0;
-        }
-
         body.light-mode .board-cell {
             background-color: #cbd5e0;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -65,6 +48,7 @@
             box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
+        /* New: Light mode colors for the symbols */
         body.light-mode .x-color {
             color: #3182ce;
             /* A slightly darker blue for contrast */
@@ -105,6 +89,7 @@
             transform: scale(1.05);
         }
 
+        /* Fix: Global color classes for X and O symbols */
         .x-color {
             color: #90cdf4;
             /* Light blue for 'X' */
@@ -175,23 +160,6 @@
             pointer-events: none;
             z-index: 1001;
         }
-
-        /* Styles for the symbol selection buttons */
-        #select-x {
-            color: #90cdf4;
-        }
-
-        #select-o {
-            color: #f6ad55;
-        }
-
-        body.light-mode #select-x {
-            color: #3182ce;
-        }
-
-        body.light-mode #select-o {
-            color: #dd6b20;
-        }
     </style>
 </head>
 
@@ -199,16 +167,16 @@
     <canvas id="confetti-canvas"></canvas>
 
     <!-- Symbol Selection Screen -->
-    <div id="symbol-selection-container"
-        class="symbol-selection-container flex-col items-center justify-center bg-gray-800 p-6 md:p-10 rounded-2xl shadow-2xl w-full max-w-lg hidden">
+    <div id="symbol-selection-container" class="hidden flex-col items-center justify-center">
         <h2 class="text-3xl font-bold mb-6 text-indigo-400">Choose Your Symbol</h2>
-        <div class="flex space-x-8 justify-center">
+        <div class="flex space-x-8">
+            <!-- Fix: Added x-color and o-color classes to the buttons -->
             <button id="select-x"
-                class="text-7xl font-bold p-8 rounded-full bg-gray-700 hover:bg-gray-600 transition duration-300 transform hover:scale-110 shadow-lg border-4 border-indigo-400">
+                class="text-7xl font-bold p-8 rounded-full bg-gray-700 hover:bg-gray-600 transition duration-300 transform hover:scale-110 shadow-lg border-4 border-indigo-400 x-color">
                 X
             </button>
             <button id="select-o"
-                class="text-7xl font-bold p-8 rounded-full bg-gray-700 hover:bg-gray-600 transition duration-300 transform hover:scale-110 shadow-lg border-4 border-orange-400">
+                class="text-7xl font-bold p-8 rounded-full bg-gray-700 hover:bg-gray-600 transition duration-300 transform hover:scale-110 shadow-lg border-4 border-orange-400 o-color">
                 O
             </button>
         </div>
@@ -296,7 +264,7 @@
             [1, 4, 7],
             [2, 5, 8],
             [0, 4, 8], // diagonals
-            [2, 5, 8]
+            [2, 4, 6]
         ];
 
         // DOM Elements
@@ -350,6 +318,7 @@
                 );
                 cellElement.dataset.index = index;
                 cellElement.innerText = cell;
+                // Fix: `board-cell.x-color` and `board-cell.o-color` now apply correctly
                 if (cell === 'X') cellElement.classList.add('x-color');
                 if (cell === 'O') cellElement.classList.add('o-color');
                 cellElement.addEventListener('click', handleCellClick);
@@ -467,14 +436,13 @@
                 currentPlayer: currentPlayer,
                 isGameActive: isGameActive
             };
-            // Use the session ID in the localStorage key for persistence
-            localStorage.setItem(`ticTacToeState-${sessionID}`, JSON.stringify(gameState));
+            localStorage.setItem('ticTacToeState', JSON.stringify(gameState));
         };
 
         /**
-         * Starts a new round, resetting the board but keeping scores.
+         * Restarts the game, resetting the board but keeping scores.
          */
-        const startNewRound = () => {
+        const restartGame = () => {
             isGameActive = true;
             currentPlayer = userSymbol;
             for (let i = 0; i < board.length; i++) {
@@ -495,49 +463,23 @@
         };
 
         /**
-         * Resets the entire game, including scores, and goes back to symbol selection.
+         * Resets the entire game, including scores.
          */
-        const fullGameRestart = () => {
-            userSymbol = null;
-            robotSymbol = null;
+        const resetGame = () => {
             playerScore = 0;
             robotScore = 0;
             playerScoreEl.innerText = playerScore;
             robotScoreEl.innerText = robotScore;
-
-            // Clear the cookies for the user symbol and session ID
-            document.cookie = `userSymbol=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
-            document.cookie = `gameSessionID=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
-
-            // Hide game and show symbol selection
-            gameContainer.classList.add('hidden');
-            symbolSelectionContainer.classList.remove('hidden');
-
-            // Generate a new session ID
-            setSessionAndDisplayID();
-
-            // Save the cleared state
-            saveGameState();
+            restartGame();
         };
 
         /**
-         * Resets the scores only.
-         */
-        const resetScores = () => {
-            playerScore = 0;
-            robotScore = 0;
-            playerScoreEl.innerText = playerScore;
-            robotScoreEl.innerText = robotScore;
-            startNewRound();
-        };
-
-        /**
-         * Closes the message box and starts a new round.
+         * Closes the message box and restarts the game.
          */
         const closeMessageBox = () => {
             messageContainer.classList.add('hidden');
             messageText.classList.remove('text-indigo-400', 'text-orange-400', 'text-gray-400');
-            startNewRound();
+            restartGame();
         };
 
         /**
@@ -555,8 +497,8 @@
 
             // Update the board and UI
             board[clickedCellIndex] = userSymbol;
-            clickedCell.classList.add(userSymbol === 'X' ? 'x-color' : 'o-color');
-            clickedCell.innerText = userSymbol;
+            // The `renderBoard()` function will handle adding the correct color class
+            renderBoard();
 
             // Check for game result after the player's move
             const result = checkGameResult();
@@ -681,7 +623,7 @@
             playerSymbolDisplay.innerText = `You (${userSymbol})`;
             robotSymbolDisplay.innerText = `Robot (${robotSymbol})`;
 
-            // Clear existing classes and add new ones based on the symbol
+            // Fix: Now adds the correct color classes to the score symbols
             playerSymbolDisplay.classList.remove('x-color', 'o-color');
             robotSymbolDisplay.classList.remove('x-color', 'o-color');
 
@@ -696,7 +638,7 @@
             symbolSelectionContainer.classList.add('hidden');
             gameContainer.classList.remove('hidden');
 
-            startNewRound();
+            restartGame();
         };
 
         /**
@@ -726,12 +668,8 @@
         const loadPreferences = () => {
             // Load theme from localStorage
             const savedTheme = localStorage.getItem('themePreference');
-            if (savedTheme === 'light' || !savedTheme) { // Default to light mode if no preference is found
+            if (savedTheme === 'light') {
                 document.body.classList.add('light-mode');
-                // Save the preference if it was not already set
-                if (!savedTheme) {
-                    localStorage.setItem('themePreference', 'light');
-                }
             }
 
             // Load user symbol from cookie
@@ -749,8 +687,7 @@
          */
         const loadGameState = () => {
             try {
-                // Use the session ID from the cookie to load the correct game state
-                const savedState = localStorage.getItem(`ticTacToeState-${sessionID}`);
+                const savedState = localStorage.getItem('ticTacToeState');
                 if (savedState) {
                     const gameState = JSON.parse(savedState);
 
@@ -793,17 +730,16 @@
             } catch (error) {
                 console.error("Failed to load game state from localStorage:", error);
                 // Clear invalid data to avoid future errors
-                localStorage.removeItem(`ticTacToeState-${sessionID}`);
+                localStorage.removeItem('ticTacToeState');
             }
         };
 
         /**
-         * Generates a simple 7-digit alphanumeric ID in lowercase.
-         * @returns {string} A 7-digit lowercase alphanumeric string.
+         * Generates a simple 7-digit alphanumeric ID.
+         * @returns {string} A 7-digit alphanumeric string.
          */
         const generateAlphaNumericID = () => {
-            // Changed character set to only include lowercase letters and numbers
-            const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
             let result = '';
             for (let i = 0; i < 7; i++) {
                 result += chars.charAt(Math.floor(Math.random() * chars.length));
@@ -840,8 +776,8 @@
 
         selectXButton.addEventListener('click', () => handleSymbolSelection('X'));
         selectOButton.addEventListener('click', () => handleSymbolSelection('O'));
-        restartButton.addEventListener('click', fullGameRestart);
-        resetButton.addEventListener('click', resetScores);
+        restartButton.addEventListener('click', restartGame);
+        resetButton.addEventListener('click', resetGame);
         themeToggleButton.addEventListener('click', toggleTheme);
         messageCloseButton.addEventListener('click', closeMessageBox);
     </script>
