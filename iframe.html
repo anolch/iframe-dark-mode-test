@@ -30,6 +30,11 @@
 </head>
 <body>
   <h1>Embedded IFrame Demo</h1>
-  <iframe src="https://sams.alwaysdata.net/iframe.html" title="Demo IFrame" sandbox="allow-storage-access-by-user-activation allow-scripts allow-same-origin"></iframe>
+    <iframe 
+    src="https://sams.alwaysdata.net/iframe.html" 
+    title="Demo IFrame"
+    allow="storage-access *; partitioned-cookies"
+    sandbox="allow-scripts allow-same-origin allow-storage-access-by-user-activation">
+  </iframe>
 </body>
 </html>
