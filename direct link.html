@@ -104,7 +104,7 @@
     <div style="margin-top: 10px; display: flex; gap: 8px; align-items: center;">
         <input id="iframeSrcInput" type="text"
             style="flex:1; padding: 8px; font-size: 14px; border-radius: 4px; border: 1px solid #ccc;" />
-        <button id="updateIframeBtn" class="action-button" style="padding: 8px 16px; font-size: 14px;">Update &
+        <button id="updateIframeBtn" class="action-button" style="padding: 8px 16px; font-size: 14px;" onclick="updateIframeURL()">Update &
             Render Iframe</button>
     </div>
 
@@ -123,6 +123,8 @@
                 console.log('PuzzleMe iframe or input not found');
             }
         }
+
+        updateIframeURL();
 
     </script>
 </body>
