@@ -110,12 +110,14 @@
 
     <script>
 
-        function updateIframeURL() {
+            function updateIframeURL() {
             const iframe = document.getElementById('puzzleIframe');
             const input = document.getElementById('iframeSrcInput');
             if (iframe && input) {
-                let baseUrl = 'https://staging.amuselabs.com/tmp-test-ls/crossword?id=7a3720d7&set=gandalf-crossword&embed=1&debug=1';
-                // Add parameters
+                let baseUrl = input.value;
+                if (baseUrl == "") {
+                    baseUrl = "https://staging.amuselabs.com/tmp-test-ls/crossword?id=7a3720d7&set=gandalf-crossword&embed=1&debug=1";
+                }
                 iframe.src = baseUrl;
                 input.value = baseUrl;
                 console.log('Updated iframe src to:', baseUrl);

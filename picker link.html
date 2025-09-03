@@ -114,8 +114,10 @@
             const iframe = document.getElementById('puzzleIframe');
             const input = document.getElementById('iframeSrcInput');
             if (iframe && input) {
-                let baseUrl = 'http://staging.amuselabs.com/tmp-test-ls/date-picker?set=gandalf-crossword&idx=2&embed=1&debug=1';
-                // Add parameters
+                let baseUrl = input.value;
+                if (baseUrl == "") {
+                    baseUrl = "http://staging.amuselabs.com/tmp-test-ls/date-picker?set=gandalf-crossword&idx=2&embed=1&debug=1"
+                }
                 iframe.src = baseUrl;
                 input.value = baseUrl;
                 console.log('Updated iframe src to:', baseUrl);
