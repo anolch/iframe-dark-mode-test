@@ -114,35 +114,36 @@
 
         window.addEventListener('message', function (e) {
             if (e.origin.includes("amuselabs.com")) {
-                try {
-                    data = JSON.parse(e.data.toString());
+                console.log(JSON.parse(e.data.toString()))
+            //     try {
+            //         data = JSON.parse(e.data.toString());
                     
-                    if (data['src'] === 'crossword' && data['message'] != "Picker shown") {
-                        if (data['frameHeight']) {
-                            console.log("1. Player - New frameHeight from iframe message: - " + data['frameHeight']);
-                            console.log("---------------------------------------------");
-                            // console.log(data);
-                            document.getElementById('pmm').style.height = data['frameHeight'] + 'px';
-                        }
-                    } else if (data['message'] != "Picker shown") {
-                        if (data['frameHeight']) {
-                            console.log("2. Other - New frameHeight from iframe message: - " + data['frameHeight']);
-                            // console.log(data);
-                            console.log("---------------------------------------------");
-                            // document.getElementById('pmm').style.height = '750px';
-                        }
-                    } else {
-                        if (data['frameHeight']) {
-                            console.log("3. Picker - New frameHeight from iframe message: - " + data['frameHeight']);
-                            // console.log(data);
-                            console.log("---------------------------------------------");
-                        }
-                    }
-                } catch (error) {
-                    console.log("Error parsing message data: " + error);
-                    console.log("---------------------------------------------");
-                }
-            }
+            //         if (data['src'] === 'crossword' && data['message'] != "Picker shown") {
+            //             if (data['frameHeight']) {
+            //                 console.log("1. Player - New frameHeight from iframe message: - " + data['frameHeight']);
+            //                 console.log("---------------------------------------------");
+            //                 // console.log(data);
+            //                 document.getElementById('pmm').style.height = data['frameHeight'] + 'px';
+            //             }
+            //         } else if (data['message'] != "Picker shown") {
+            //             if (data['frameHeight']) {
+            //                 console.log("2. Other - New frameHeight from iframe message: - " + data['frameHeight']);
+            //                 // console.log(data);
+            //                 console.log("---------------------------------------------");
+            //                 // document.getElementById('pmm').style.height = '750px';
+            //             }
+            //         } else {
+            //             if (data['frameHeight']) {
+            //                 console.log("3. Picker - New frameHeight from iframe message: - " + data['frameHeight']);
+            //                 // console.log(data);
+            //                 console.log("---------------------------------------------");
+            //             }
+            //         }
+            //     } catch (error) {
+            //         console.log("Error parsing message data: " + error);
+            //         console.log("---------------------------------------------");
+            //     }
+            // }
         });
 
         let darkMode = 0; // Initial state
